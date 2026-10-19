@@ -28,6 +28,12 @@ Every product and technical decision has already been made below. Do not ask for
 - Audio: synthesized with the WebAudio API (blade contact, scoring-box buzzer, referee whistle). No audio files.
 - Persistence: `localStorage` (progress, settings, saved phrases)
 - Lint: ESLint + Prettier with default configs
+- **Hosting/deploy contract (IPFS static host — mandatory):**
+  - `package.json` and `index.html` live at the **workspace root** (never in a subfolder).
+  - `package.json` has `"build": "vite build"`, which outputs to `dist/` containing `dist/index.html`.
+  - `vite.config.ts` sets `base: './'` so every asset path is relative (the site is served from an IPFS gateway sub-path).
+  - Routing is hash-based (`#/learn`, …); no server rewrites exist.
+  - After building, verify that `dist/index.html` exists and references only relative `./assets/...` paths. Do not finish until this check passes.
 - Target: 60 fps on a mid-range laptop with integrated GPU in Chrome, Firefox, and Safari. Learn Mode must also work on tablets (touch orbit and scrub).
 
 ---
@@ -517,7 +523,7 @@ Plus 10 or more covering counter-ripostes, ceding parries, compound ripostes, fl
 
 ## 11. OUTPUT FORMAT
 
-- If you have file-system and terminal access: create the project in `./piste-foil-trainer/`, run the commands, iterate until green, then print the final file tree and test summary.
+- If you have file-system and terminal access: create the project **directly in the current working directory (the repository/workspace root) — NOT in a subfolder**. `package.json` and `index.html` must sit at the root. Run the commands, iterate until green, then print the final file tree and test summary.
 - If you are chat-only: output the complete file tree first, then **every file in full**, each in its own fenced code block preceded by its path. Do not abridge or say "similar to above". Data files with all 100 techniques must be written out completely. If you hit an output limit, stop at a file boundary and print `CONTINUE FROM: <next path>` so the build can be resumed exactly.
 
 Begin now with M0. Do not ask questions.
